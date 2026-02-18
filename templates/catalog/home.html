@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>AgroKart Products</h2>
+<hr>
+
+{% if products %}
+    {% for product in products %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:15px;">
+
+            <h3>{{ product.name }}</h3>
+
+            <p><strong>Category:</strong> {{ product.category }}</p>
+            <p><strong>Brand:</strong> {{ product.brand }}</p>
+            <p><strong>Packaging:</strong> {{ product.packaging }}</p>
+            <p><strong>Price:</strong> ₹{{ product.price }}</p>
+            <p><strong>Stock:</strong> {{ product.stock }}</p>
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}" width="150">
+            {% endif %}
+
+            <br><br>
+
+            <!-- Add to Cart Button -->
+            {% if user.is_authenticated %}
+                <a href="{% url 'add_to_cart' product.id %}">
+                    <button>Add to Cart</button>
+                </a>
+            {% else %}
+                <a href="/accounts/login/">
+                    <button>Login to Buy</button>
+                </a>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+
+{% else %}
+    <p>No products available</p>
+{% endif %}
+
+{% endblock %}

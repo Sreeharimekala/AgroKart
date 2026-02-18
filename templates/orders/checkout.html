@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Checkout</h2>
+<hr>
+
+<h3>Select Delivery Address</h3>
+
+{% if addresses %}
+<form method="post">
+    {% csrf_token %}
+
+    {% for address in addresses %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <input type="radio" name="address" value="{{ address.id }}" required>
+
+            <strong>{{ address.full_name }}</strong><br>
+            {{ address.address_line1 }}<br>
+            {{ address.address_line2 }}<br>
+            {{ address.city }}, {{ address.state }} - {{ address.pincode }}<br>
+            Phone: {{ address.phone }}
+
+            {% if address.is_default %}
+                <p><b>Default Address</b></p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" style="padding:10px 20px; font-size:16px;">
+        Confirm Order
+    </button>
+</form>
+
+{% else %}
+<p>No address found.</p>
+<a href="/accounts/add-address/">
+    <button>Add Address</button>
+</a>
+{% endif %}
+
+{% endblock %}
